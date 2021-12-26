@@ -82,13 +82,18 @@ function Home() {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const increaseIndex = () => {
-    if (data) {
-      if (leaving) return;
-      toggleLeaving();
-      const totalMovies = data.results.length;
-      const maxIndex = Math.floor(totalMovies / offset);
-      setIndex(prev => (prev === maxIndex ? 0 : prev + 1));
+    if (!data) {
+      return;
     }
+
+    if (leaving) {
+      return;
+    }
+
+    toggleLeaving();
+    const totalMovies = data.results.length;
+    const maxIndex = Math.floor(totalMovies / offset);
+    setIndex(prev => (prev === maxIndex ? 0 : prev + 1));
   };
 
   const toggleLeaving = () => setLeaving(prev => !prev);
