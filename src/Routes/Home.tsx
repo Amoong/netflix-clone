@@ -41,7 +41,7 @@ const Overview = styled.p`
 
 const Slider = styled.div`
   position: relative;
-  top: -100px;
+  top: -150px;
 `;
 
 const Row = styled(motion.div)`
@@ -59,7 +59,28 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-size: cover;
   background-position: center center;
   font-size: 64px;
-  height: 200px;
+  height: 10vw;
+  position: relative;
+  &:first-child {
+    transform-origin: center left;
+  }
+
+  &:last-child {
+    transform-origin: center right;
+  }
+`;
+
+const Info = styled(motion.div)`
+  padding: 10px;
+  background-color: ${props => props.theme.black.lighter};
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  h4 {
+    text-align: center;
+    font-size: 14px;
+  }
 `;
 
 const rowVariants = {
@@ -71,6 +92,24 @@ const rowVariants = {
   },
   exit: {
     x: -(window.innerWidth - 5),
+  },
+};
+
+const boxVariatns = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    y: -50,
+    scale: 1.3,
+    transition: { delay: 0.5, type: "tween", duration: 0.2 },
+  },
+};
+
+const infoVariants = {
+  hover: {
+    opacity: 1,
+    transition: { delay: 0.5, type: "tween", duration: 0.2 },
   },
 };
 
@@ -125,7 +164,18 @@ function Home() {
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
                   .map(movie => (
-                    <Box key={movie.id} bgPhoto={makeImagePath(movie?.backdrop_path, "w500")}></Box>
+                    <Box
+                      key={movie.id}
+                      whileHover="hover"
+                      initial="normal"
+                      transition={{ type: "tween" }}
+                      variants={boxVariatns}
+                      bgPhoto={makeImagePath(movie?.backdrop_path, "w500")}
+                    >
+                      <Info variants={infoVariants}>
+                        <h4>{movie.title}</h4>
+                      </Info>
+                    </Box>
                   ))}
               </Row>
             </AnimatePresence>
